@@ -8,10 +8,10 @@ This folder contains epics for the project.
 
 ## Next ID
 
-**NEXT_ID: 1**
+**NEXT_ID: 2**
 
 ## List
 
 | ID | Title | Status |
 |----|-------|--------|
-| - | No epics yet | - |
+| e-001 | Create 300b Model | draft |
