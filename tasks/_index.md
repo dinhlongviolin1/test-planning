@@ -8,10 +8,10 @@ This folder contains tasks for the project.
 
 ## Next ID
 
-**NEXT_ID: 1**
+**NEXT_ID: 2**
 
 ## List
 
 | ID | Title | Status |
 |----|-------|--------|
-| - | No tasks yet | - |
+| t-001 | Generate Python Hello Script for Team Members | pending |
