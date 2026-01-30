@@ -4,7 +4,7 @@
 
 | Username | Name | Role | Capacity/Sprint |
 |----------|------|------|-----------------|
-| @dinhlongviolin1 | Dinh Long | Lead Engineer | 10 pts |
+| @dinhlongviolin1 | Dinh Long | Software Engineer | 10 pts |
 | @faisal | Faisal | Frontend Engineer/UI Designer | 10 pts |
 | @louis | Louis | Senior Software Engineer | 10 pts |
 | @nguyen | Nguyen | Senior Software Engineer | 10 pts |
