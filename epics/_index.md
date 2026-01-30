@@ -8,7 +8,7 @@ This folder contains epics for the project.
 
 ## Next ID
 
-**NEXT_ID: 7**
+**NEXT_ID: 8**
 
 ## List
 
@@ -20,3 +20,5 @@ This folder contains epics for the project.
 | e-004 | Security Enhancements | active |
 | e-005 | Performance Optimizations | active |
 | e-006 | New Feature Integration | active |
+| e-007 | Core Platform Enhancements | active |
+| e-008 | User Interface Improvements | active |
