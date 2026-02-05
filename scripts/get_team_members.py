@@ -58,7 +58,7 @@ def parse_markdown_table(table_text: str) -> List[List[str]]:
     
     for line in lines:
         # Skip separator lines (like |---|)
-        if re.match(r'^[\s\|]*[-:]+[\s\|]*$', line):
+        if re.match(r'^\|[\s\-:]+(\|[\s\-:]+)*\|$', line):
             continue
             
         # Extract cells from the line
@@ -70,70 +70,96 @@ def parse_markdown_table(table_text: str) -> List[List[str]]:
     return rows
 
 
-def get_team_members(file_path: Optional[str] = None) -> List[TeamMember]:
+def get_all_users(file_path: Optional[str] = None) -> List[TeamMember]:
     """
-    Read and parse team members from team.md file.
-    
+    Get all users from the repository.
+
     Args:
         file_path: Optional path to team.md file. If not provided,
                    uses the default location in the repo.
-    
+
+    Returns:
+        List of TeamMember objects representing all users.
+
+    Raises:
+        FileNotFoundError: If the team.md file is not found.
+        ValueError: If no users are found or the file format is invalid.
+    """
+    members = get_team_members(file_path)
+
+    if not members:
+        raise ValueError("No users found in the repository")
+
+    return members
+
+
+def get_team_members(file_path: Optional[str] = None) -> List[TeamMember]:
+    """
+    Read and parse team members from team.md file.
+
+    Args:
+        file_path: Optional path to team.md file. If not provided,
+                   uses the default location in the repo.
+
     Returns:
         List of TeamMember objects
     """
     if file_path is None:
         file_path = str(get_team_file_path())
-    
+
+    if not Path(file_path).exists():
+        raise FileNotFoundError(f"Team file not found: {file_path}")
+
     with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
-    
+
     # Find the team members table section
     # Look for lines that start with | and contain data
     lines = content.split('\n')
-    
+
     # Find the header row (first row with |username|)
     header_idx = None
     separator_idx = None
     data_start_idx = None
-    
+
     for i, line in enumerate(lines):
         stripped = line.strip()
         if stripped.startswith('|') and 'username' in stripped.lower():
             header_idx = i
         elif header_idx is not None and separator_idx is None:
-            if re.match(r'^[\s\|]*[-:]+[\s\|]*$', line):
+            if re.match(r'^\|[\s\-:]+(\|[\s\-:]+)*\|$', line):
                 separator_idx = i
                 # Data starts after separator
                 data_start_idx = i + 1
                 break
-    
+
     if header_idx is None or separator_idx is None:
-        return []
-    
+        raise ValueError("Invalid team.md format: table not found")
+
     members = []
-    
+
     # Parse data rows
     for line in lines[data_start_idx:]:
         stripped = line.strip()
         if not stripped or not stripped.startswith('|'):
             break
-            
+
         cells = [cell.strip() for cell in stripped.strip('|').split('|')]
-        
+
         # Expecting: username, name, role, capacity (4 columns)
         if len(cells) >= 4:
             username = cells[0].lstrip('@')  # Remove @ prefix
             name = cells[1]
             role = cells[2]
             capacity = cells[3]
-            
+
             members.append(TeamMember(
                 username=username,
                 name=name,
                 role=role,
                 capacity=capacity
             ))
-    
+
     return members
 
 
@@ -208,16 +234,26 @@ def print_team_members(members: Optional[List[TeamMember]] = None):
 # CLI Entry Point
 if __name__ == "__main__":
     import argparse
-    
+    import json
+
     parser = argparse.ArgumentParser(description="Get team members from team.md")
+    parser.add_argument('--all-users', '-a', action='store_true',
+                        help="Get all users from the repository (equivalent to no filter)")
     parser.add_argument('--username', '-u', type=str, help="Filter by username")
     parser.add_argument('--role', '-r', type=str, help="Filter by role")
     parser.add_argument('--json', action='store_true', help="Output as JSON")
-    
+
     args = parser.parse_args()
-    
-    members = get_team_members()
-    
+
+    if args.all_users:
+        try:
+            members = get_all_users()
+        except (FileNotFoundError, ValueError) as e:
+            print(f"Error: {e}")
+            members = []
+    else:
+        members = get_team_members()
+
     if args.username:
         member = get_member_by_username(args.username)
         if member:
@@ -225,12 +261,11 @@ if __name__ == "__main__":
         else:
             print(f"Member not found: {args.username}")
             members = []
-    
+
     if args.role:
         members = get_members_by_role(args.role)
-    
+
     if args.json:
-        import json
         print(json.dumps([m.to_dict() for m in members], indent=2))
     else:
         print_team_members(members)

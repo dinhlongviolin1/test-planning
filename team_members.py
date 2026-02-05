@@ -24,6 +24,31 @@ class TeamMember:
         return f"TeamMember(username='{self.username}', name='{self.name}', role='{self.role}', capacity='{self.capacity}')"
 
 
+def get_all_users(file_path: Optional[str] = None) -> List[TeamMember]:
+    """
+    Get all users from the repository.
+
+    Retrieves all team members from the team.md file.
+
+    Args:
+        file_path: Optional path to the team.md file. If not provided,
+                   will look for team.md in the current directory.
+
+    Returns:
+        List of TeamMember objects representing all users.
+
+    Raises:
+        FileNotFoundError: If the team.md file is not found.
+        ValueError: If no users are found or the file format is invalid.
+    """
+    members = get_team_members(file_path)
+
+    if not members:
+        raise ValueError("No users found in the repository")
+
+    return members
+
+
 def get_team_members(file_path: Optional[str] = None) -> List[TeamMember]:
     """
     Retrieve all team members from the team.md file.
