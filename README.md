@@ -22,9 +22,25 @@ You are an AI assistant managing the **test-planning** software project. This re
 
 ```
 /                      ← Root of planning repo
-├── README.md          ← YOU ARE HERE (don't modify this)
+├── README.md          ← YOU ARE HERE
 ├── project.md         ← Project overview, linked code repos
 ├── team.md            ← Team members (for @mentions)
+├── requirements.txt   ← Python dependencies
+├── .gitignore         ← Git ignore rules
+│
+├── src/               ← Python source code
+│   └── team_members/  ← Team member utilities package
+│       ├── __init__.py
+│       └── ...
+│
+├── scripts/           ← Executable scripts
+│   ├── list_users.py
+│   ├── get_team_members.py
+│   └── README.md
+│
+├── tests/             ← Unit tests
+│   ├── __init__.py
+│   └── test_team_members.py
 │
 ├── milestones/        ← Long-term release targets
 │   ├── _index.md      ← Overview + how to use
