@@ -2,7 +2,6 @@
 Tests for the issues.py module.
 """
 
-import pytest
 from pathlib import Path
 import sys
 
@@ -17,7 +16,7 @@ from issues import (
     get_issues_by_assignee,
     parse_markdown_meta,
     parse_title_section,
-    parse_description_section
+    parse_description_section,
 )
 
 
@@ -34,7 +33,7 @@ class TestIssue:
             points="5",
             assignee="dinhlongviolin1",
             title="Test Issue",
-            description="Test description"
+            description="Test description",
         )
 
         assert issue.id == "i-001"
@@ -51,7 +50,7 @@ class TestIssue:
             points="5",
             assignee="dinhlongviolin1",
             title="Test Issue",
-            description="Test description"
+            description="Test description",
         )
 
         result = issue.to_dict()

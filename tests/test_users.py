@@ -2,7 +2,6 @@
 Tests for the team_members.py module.
 """
 
-import pytest
 from pathlib import Path
 import sys
 
@@ -15,7 +14,7 @@ from team_members import (
     get_member_by_username,
     get_members_by_role,
     get_all_roles,
-    parse_team_table
+    parse_team_table,
 )
 
 
@@ -28,7 +27,7 @@ class TestTeamMember:
             username="testuser",
             name="Test User",
             role="Software Engineer",
-            capacity="10 pts"
+            capacity="10 pts",
         )
 
         assert member.username == "testuser"
@@ -41,7 +40,7 @@ class TestTeamMember:
             username="testuser",
             name="Test User",
             role="Software Engineer",
-            capacity="10 pts"
+            capacity="10 pts",
         )
 
         result = member.to_dict()

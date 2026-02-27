@@ -2,7 +2,6 @@
 Integration tests for the get_all_data.py script.
 """
 
-import pytest
 import json
 import subprocess
 from pathlib import Path
@@ -51,7 +50,7 @@ class TestGetAllDataIntegration:
             ["python3", "scripts/get_all_data.py", "--users"],
             capture_output=True,
             text=True,
-            cwd=Path(__file__).parent.parent
+            cwd=Path(__file__).parent.parent,
         )
 
         assert result.returncode == 0
@@ -63,7 +62,7 @@ class TestGetAllDataIntegration:
             ["python3", "scripts/get_all_data.py", "--issues"],
             capture_output=True,
             text=True,
-            cwd=Path(__file__).parent.parent
+            cwd=Path(__file__).parent.parent,
         )
 
         assert result.returncode == 0
@@ -75,7 +74,7 @@ class TestGetAllDataIntegration:
             ["python3", "scripts/get_all_data.py", "--json"],
             capture_output=True,
             text=True,
-            cwd=Path(__file__).parent.parent
+            cwd=Path(__file__).parent.parent,
         )
 
         assert result.returncode == 0

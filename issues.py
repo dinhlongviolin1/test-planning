@@ -5,7 +5,6 @@ This module provides functionality to retrieve and parse issue
 information from the issues/ folder in the planning repository.
 """
 
-import re
 from pathlib import Path
 from typing import List, Dict, Optional
 from dataclasses import dataclass
@@ -14,6 +13,7 @@ from dataclasses import dataclass
 @dataclass
 class Issue:
     """Represents an issue with its details."""
+
     id: str
     status: str
     created: str
@@ -33,7 +33,7 @@ class Issue:
             "points": self.points,
             "assignee": self.assignee,
             "title": self.title,
-            "description": self.description
+            "description": self.description,
         }
 
 
@@ -59,7 +59,7 @@ def parse_markdown_meta(content: str) -> Dict[str, str]:
         Dictionary of meta field values
     """
     meta = {}
-    lines = content.split('\n')
+    lines = content.split("\n")
 
     in_meta_table = False
 
@@ -67,17 +67,17 @@ def parse_markdown_meta(content: str) -> Dict[str, str]:
         stripped = line.strip()
 
         # Detect start of meta table
-        if stripped == '# Meta':
+        if stripped == "# Meta":
             in_meta_table = True
             continue
 
         # Detect end of meta table (next ## section)
-        if in_meta_table and stripped.startswith('##'):
+        if in_meta_table and stripped.startswith("##"):
             break
 
         # Parse table rows
-        if in_meta_table and stripped.startswith('|') and '---' not in stripped:
-            cells = [cell.strip() for cell in stripped.strip('|').split('|')]
+        if in_meta_table and stripped.startswith("|") and "---" not in stripped:
+            cells = [cell.strip() for cell in stripped.strip("|").split("|")]
             if len(cells) >= 2:
                 field = cells[0]
                 value = cells[1]
@@ -88,46 +88,46 @@ def parse_markdown_meta(content: str) -> Dict[str, str]:
 
 def parse_title_section(content: str) -> str:
     """Extract title from ## Title section."""
-    lines = content.split('\n')
+    lines = content.split("\n")
     in_title = False
     title_lines = []
 
     for line in lines:
         stripped = line.strip()
 
-        if stripped == '## Title':
+        if stripped == "## Title":
             in_title = True
             continue
 
         if in_title:
-            if stripped.startswith('## '):
+            if stripped.startswith("## "):
                 break
             if stripped:
                 title_lines.append(stripped)
 
-    return ' '.join(title_lines).strip()
+    return " ".join(title_lines).strip()
 
 
 def parse_description_section(content: str) -> str:
     """Extract description from ## Description section."""
-    lines = content.split('\n')
+    lines = content.split("\n")
     in_desc = False
     desc_lines = []
 
     for line in lines:
         stripped = line.strip()
 
-        if stripped == '## Description':
+        if stripped == "## Description":
             in_desc = True
             continue
 
         if in_desc:
-            if stripped.startswith('## '):
+            if stripped.startswith("## "):
                 break
             if stripped:
                 desc_lines.append(stripped)
 
-    return ' '.join(desc_lines).strip()
+    return " ".join(desc_lines).strip()
 
 
 def parse_issue_file(file_path: Path) -> Issue:
@@ -140,7 +140,7 @@ def parse_issue_file(file_path: Path) -> Issue:
     Returns:
         Issue object
     """
-    with open(file_path, 'r', encoding='utf-8') as f:
+    with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
 
     # Parse meta table
@@ -151,19 +151,19 @@ def parse_issue_file(file_path: Path) -> Issue:
     description = parse_description_section(content)
 
     # Get assignee without @ prefix
-    assignee = meta.get('Assignee', '')
-    if assignee.startswith('@'):
+    assignee = meta.get("Assignee", "")
+    if assignee.startswith("@"):
         assignee = assignee[1:]
 
     return Issue(
-        id=meta.get('ID', ''),
-        status=meta.get('Status', ''),
-        created=meta.get('Created', ''),
-        updated=meta.get('Updated', ''),
-        points=meta.get('Points', ''),
+        id=meta.get("ID", ""),
+        status=meta.get("Status", ""),
+        created=meta.get("Created", ""),
+        updated=meta.get("Updated", ""),
+        points=meta.get("Points", ""),
         assignee=assignee,
         title=title,
-        description=description
+        description=description,
     )
 
 
@@ -181,18 +181,19 @@ def get_issues(issues_dir: Optional[str] = None) -> List[Issue]:
     Raises:
         FileNotFoundError: If the issues directory is not found.
     """
+    issues_path: Path
     if issues_dir is None:
-        issues_dir = get_issues_dir()
+        issues_path = get_issues_dir()
     else:
-        issues_dir = Path(issues_dir)
+        issues_path = Path(issues_dir)
 
-    if not issues_dir.exists():
-        raise FileNotFoundError(f"Issues directory not found: {issues_dir}")
+    if not issues_path.exists():
+        raise FileNotFoundError(f"Issues directory not found: {issues_path}")
 
     issues = []
 
     # Find all issue files (i-*.md but not _index.md)
-    for file_path in sorted(issues_dir.glob("i-*.md")):
+    for file_path in sorted(issues_path.glob("i-*.md")):
         issue = parse_issue_file(file_path)
         issues.append(issue)
 
@@ -234,7 +235,9 @@ def get_issue_by_id(issue_id: str, issues_dir: Optional[str] = None) -> Optional
     return None
 
 
-def get_issues_by_assignee(assignee: str, issues_dir: Optional[str] = None) -> List[Issue]:
+def get_issues_by_assignee(
+    assignee: str, issues_dir: Optional[str] = None
+) -> List[Issue]:
     """
     Get all issues assigned to a specific user.
 

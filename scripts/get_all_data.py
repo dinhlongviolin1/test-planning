@@ -13,8 +13,8 @@ from pathlib import Path
 # Add parent directory to path to import modules
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from team_members import get_team_members, TeamMember
-from issues import get_issues, Issue
+from team_members import get_team_members
+from issues import get_issues
 
 
 def get_repo_root() -> Path:
@@ -34,7 +34,9 @@ def print_users():
     print("=" * 70)
 
     for member in members:
-        print(f"@{member.username:<13} {member.name:<20} {member.role:<25} {member.capacity:<10}")
+        print(
+            f"@{member.username:<13} {member.name:<20} {member.role:<25} {member.capacity:<10}"
+        )
 
     print("=" * 70)
     print(f"Total team members: {len(members)}\n")
@@ -80,21 +82,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Get all users and issues from the planning repository"
     )
-    parser.add_argument(
-        '--users', '-u',
-        action='store_true',
-        help="Show only users"
-    )
-    parser.add_argument(
-        '--issues', '-i',
-        action='store_true',
-        help="Show only issues"
-    )
-    parser.add_argument(
-        '--json', '-j',
-        action='store_true',
-        help="Output as JSON"
-    )
+    parser.add_argument("--users", "-u", action="store_true", help="Show only users")
+    parser.add_argument("--issues", "-i", action="store_true", help="Show only issues")
+    parser.add_argument("--json", "-j", action="store_true", help="Output as JSON")
 
     args = parser.parse_args()
 
