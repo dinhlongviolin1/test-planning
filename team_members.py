@@ -23,6 +23,15 @@ class TeamMember:
     def __repr__(self) -> str:
         return f"TeamMember(username='{self.username}', name='{self.name}', role='{self.role}', capacity='{self.capacity}')"
 
+    def to_dict(self) -> Dict[str, str]:
+        """Convert to dictionary."""
+        return {
+            "username": self.username,
+            "name": self.name,
+            "role": self.role,
+            "capacity": self.capacity
+        }
+
 
 def get_team_members(file_path: Optional[str] = None) -> List[TeamMember]:
     """
