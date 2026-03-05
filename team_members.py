@@ -5,7 +5,6 @@ This module provides functionality to retrieve and parse team member
 information from the team.md file in the planning repository.
 """
 
-import os
 import re
 from pathlib import Path
 from typing import List, Dict, Optional
@@ -73,8 +72,7 @@ def parse_team_table(markdown_content: str) -> List[TeamMember]:
     
     # Find the table and parse it
     in_table = False
-    headers = []
-    
+
     for line in lines:
         stripped = line.strip()
         
