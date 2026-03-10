@@ -3,7 +3,13 @@
 List all users/team members from the team.md file.
 """
 
-from team_members import get_team_members, print_team_roster
+import sys
+from pathlib import Path
+
+# Add parent directory to path so we can import team_members
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from team_members import print_team_roster
 
 
 def main():
