@@ -5,10 +5,9 @@ This script provides functions to read and parse team member information
 from the team.md file in the planning repository.
 """
 
-import os
 import re
 from pathlib import Path
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
 from dataclasses import dataclass
 
 
@@ -58,7 +57,7 @@ def parse_markdown_table(table_text: str) -> List[List[str]]:
     
     for line in lines:
         # Skip separator lines (like |---|)
-        if re.match(r'^[\s\|]*[-:]+[\s\|]*$', line):
+        if re.match(r'^[\s\|]*[-:]+[\s\|]*(\|[\s\|]*[-:]+[\s\|]*)*$', line):
             continue
             
         # Extract cells from the line
@@ -101,7 +100,7 @@ def get_team_members(file_path: Optional[str] = None) -> List[TeamMember]:
         if stripped.startswith('|') and 'username' in stripped.lower():
             header_idx = i
         elif header_idx is not None and separator_idx is None:
-            if re.match(r'^[\s\|]*[-:]+[\s\|]*$', line):
+            if re.match(r'^[\s\|]*[-:]+[\s\|]*(\|[\s\|]*[-:]+[\s\|]*)*$', line):
                 separator_idx = i
                 # Data starts after separator
                 data_start_idx = i + 1

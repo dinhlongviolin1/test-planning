@@ -1,0 +1,13 @@
+{
+  "name": "test-planning",
+  "version": "1.0.0",
+  "description": "Planning repository for test-planning project",
+  "private": true,
+  "scripts": {
+    "build": "echo 'No build required for planning repository'",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
