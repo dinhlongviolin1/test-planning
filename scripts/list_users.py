@@ -3,12 +3,12 @@
 List all users/team members from the team.md file.
 """
 
-from team_members import get_team_members, print_team_roster
+from get_team_members import print_team_members
 
 
 def main():
     """List all team members."""
-    print_team_roster()
+    print_team_members()
 
 
 if __name__ == "__main__":

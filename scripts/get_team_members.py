@@ -5,10 +5,9 @@ This script provides functions to read and parse team member information
 from the team.md file in the planning repository.
 """
 
-import os
 import re
 from pathlib import Path
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
 from dataclasses import dataclass
 
 
