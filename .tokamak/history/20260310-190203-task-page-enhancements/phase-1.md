@@ -31,3 +31,10 @@ There is no application code (React, TypeScript, etc.) in this repository.
 - scripts/get_team_members.py (+1, -2)
 - scripts/list_users.py (+2, -2)
 - team_members.py (+1, -4)
+
+## Task 1.final.2: Fix final validation issues
+**Status**: in_progress
+**Summary**: Fixed the critical bug in `scripts/get_team_members.py` where the regex pattern failed to match multi-cell markdown table separator lines like `|----------|------|------|-----------------|`.
+
+**Files Changed**:
+- scripts/get_team_members.py (+2, -2)
