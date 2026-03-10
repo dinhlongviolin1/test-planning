@@ -57,8 +57,8 @@ def parse_markdown_table(table_text: str) -> List[List[str]]:
     rows = []
 
     for line in lines:
-        # Skip separator lines (like |---|)
-        if re.match(r"^[\s\|]*[-:]+[\s\|]*$", line):
+        # Skip separator lines (like |---| or |----------|------|)
+        if re.match(r"^\s*\|[\s\-:]+\|", line) or re.match(r"^[\s\|]*[-:]+[\s\|]*$", line):
             continue
 
         # Extract cells from the line
@@ -101,7 +101,8 @@ def get_team_members(file_path: Optional[str] = None) -> List[TeamMember]:
         if stripped.startswith("|") and "username" in stripped.lower():
             header_idx = i
         elif header_idx is not None and separator_idx is None:
-            if re.match(r"^[\s\|]*[-:]+[\s\|]*$", line):
+            # Match markdown table separator like |---| or |----------|------|
+            if re.match(r"^\s*\|[\s\-:]+\|", line) or re.match(r"^[\s\|]*[-:]+[\s\|]*$", line):
                 separator_idx = i
                 # Data starts after separator
                 data_start_idx = i + 1
