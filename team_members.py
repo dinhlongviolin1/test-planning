@@ -166,10 +166,20 @@ def get_all_roles(file_path: Optional[str] = None) -> List[str]:
     return sorted(list(roles))
 
 
+def greet() -> str:
+    """
+    Return a friendly greeting message.
+
+    Returns:
+        A greeting string.
+    """
+    return "Hi there it is really nice to see"
+
+
 def print_team_roster(file_path: Optional[str] = None) -> None:
     """
     Print a formatted roster of all team members.
-    
+
     Args:
         file_path: Optional path to the team.md file.
     """
