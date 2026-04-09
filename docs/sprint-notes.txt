@@ -1,0 +1,24 @@
+Sprint 3 Notes - Test Planning Project
+======================================
+
+Date: 2026-04-09
+Attendees: Long, Han, Ashley
+
+Items Completed:
+- Context sync feature shipped (PR #347)
+- MCP tools for context: pm_context_read_index, pm_context_init, pm_context_restructure
+- Import from repo folder feature added
+- OCR upload → "Add to Context" workflow complete
+
+In Progress:
+- Testing full import flow with test-planning repo
+- Sidebar repo navigation with issue filtering
+
+Blockers:
+- PDF OCR requires OCR provider configured in DB
+- Text files and markdown work fine without additional config
+
+Action Items:
+1. Long: verify sidebar repos show up correctly in UI
+2. Han: polish placeholder text for empty doc state
+3. Ashley: confirm Slack pm_context_* tool classification
