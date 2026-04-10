@@ -21,3 +21,7 @@
 ## Task 1.qa.2: Fix QA issues in phase Implement get_all_issues_and_epics.py script
 **Status**: in_progress
 **Summary**: Task completed.
+
+## Task 1.qa.2.1: Fix: Fix QA issues in phase Implement get_all_issues_and_epics.py script
+**Status**: in_progress
+**Summary**: There's an issue with the selected model (minimaxai/minimax-m2.5). It may not exist or you may not have access to it. Run --model to pick a different model.
