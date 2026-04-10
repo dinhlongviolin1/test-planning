@@ -29,3 +29,7 @@
 ## Task 1.final.1: Fix final validation issues
 **Status**: in_progress
 **Summary**: There's an issue with the selected model (minimaxai/minimax-m2.5). It may not exist or you may not have access to it. Run --model to pick a different model.
+
+## Task 1.final.1.1: Fix: Fix final validation issues
+**Status**: in_progress
+**Summary**: There's an issue with the selected model (minimaxai/minimax-m2.5). It may not exist or you may not have access to it. Run --model to pick a different model.
