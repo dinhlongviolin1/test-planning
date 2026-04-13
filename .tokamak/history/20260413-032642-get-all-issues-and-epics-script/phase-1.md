@@ -13,3 +13,7 @@
 ## Task 1.qa.1: Fix QA issues in phase Implement Get All Issues and Epics Script
 **Status**: in_progress
 **Summary**: Task completed.
+
+## Task 1.qa.1.1: Fix: Fix QA issues in phase Implement Get All Issues and Epics Script
+**Status**: in_progress
+**Summary**: Task completed.
