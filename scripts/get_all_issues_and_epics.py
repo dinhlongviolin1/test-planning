@@ -20,50 +20,6 @@ def get_repo_root() -> Path:
     return current.parent.parent
 
 
-def parse_meta_table(content: str) -> Optional[Dict[str, str]]:
-    """
-    Parse a markdown meta table (Field|Value pairs) from content.
-
-    Args:
-        content: The markdown content to parse.
-
-    Returns:
-        Dictionary of field names to values, or None if no valid table found.
-    """
-    lines = content.split('\n')
-
-    # Find the meta table (starts with | Field | Value |)
-    in_table = False
-    table_started = False
-
-    for line in lines:
-        stripped = line.strip()
-
-        # Look for the meta table header
-        if '| Field | Value |' in stripped:
-            in_table = True
-            table_started = True
-            continue
-
-        # Skip separator line |-------|-------|
-        if in_table and re.match(r'^\|[\s\-:]+\|[\s\-:]+\|$', stripped):
-            continue
-
-        # End of table (line doesn't start with |)
-        if in_table and not stripped.startswith('|'):
-            break
-
-        # Parse data row
-        if in_table and stripped.startswith('|'):
-            cells = [cell.strip() for cell in stripped.strip('|').split('|')]
-            if len(cells) >= 2:
-                field = cells[0].strip()
-                value = cells[1].strip()
-                return field, value
-
-    return None
-
-
 def parse_frontmatter(content: str) -> Dict[str, str]:
     """
     Parse frontmatter from markdown content.
@@ -200,6 +156,7 @@ def main():
     args = parser.parse_args()
 
     repo_root = get_repo_root()
+    error_occurred = False
 
     # Determine directories
     issues_dir = Path(args.issues_dir) if args.issues_dir else repo_root / "issues"
@@ -215,6 +172,7 @@ def main():
             issues.append(metadata)
         else:
             print(f"Warning: Skipping malformed file: {file_path}", file=sys.stderr)
+            error_occurred = True
 
     # Parse epics
     epics = []
@@ -226,6 +184,7 @@ def main():
             epics.append(metadata)
         else:
             print(f"Warning: Skipping malformed file: {file_path}", file=sys.stderr)
+            error_occurred = True
 
     # Filter by status if requested
     if args.status:
@@ -240,7 +199,7 @@ def main():
 
     print(json.dumps(result, indent=2))
 
-    return 0
+    return 1 if error_occurred else 0
 
 
 if __name__ == "__main__":
