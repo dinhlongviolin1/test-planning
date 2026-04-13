@@ -2,6 +2,14 @@
 
 Welcome, AI Agent! This document is your guide to understanding and navigating this project repository. Think of it like a game tutorial - read this first before making any moves.
 
+## Commands
+
+```
+# Install dependencies (no external deps needed)
+$ hello
+hello world
+```
+
 ## 🌍 World Overview
 
 You are an AI assistant managing the **test-planning** software project. This repository is your "game world" where all project management data lives as markdown files.
