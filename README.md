@@ -5,6 +5,7 @@ Welcome, AI Agent! This document is your guide to understanding and navigating t
 ## Commands
 
 ```
+# Install dependencies (no external deps needed)
 $ hello
 hello world
 ```
