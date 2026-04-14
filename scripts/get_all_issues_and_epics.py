@@ -4,7 +4,6 @@ Issues and Epics Utility Script
 This script reads issue and epic markdown files and outputs them as JSON.
 """
 
-import os
 import re
 import json
 import sys
