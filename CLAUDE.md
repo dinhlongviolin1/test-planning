@@ -56,6 +56,7 @@ Links between entities are always bidirectional. If an issue links to an epic, t
 
 ## References
 
+- `ARCHITECTURE.md` -- high-level architecture overview
 - `skills/coding/conventions.md` -- coding conventions
 - `skills/coding/testing.md` -- testing guidelines
 - `docs/architecture.md` -- tech stack details (Go 1.25, React 19, PostgreSQL 18)
