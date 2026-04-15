@@ -6,7 +6,6 @@ from the planning repository. Issues are stored in issues/i-XXX.md and
 epics in epics/e-XXX.md, using markdown meta tables for metadata.
 """
 
-import os
 import re
 import sys
 from pathlib import Path
@@ -193,9 +192,9 @@ class Issue:
         result["tasks"] = self.tasks
         result["notes"] = self.notes
         # Include any extra meta fields not explicitly modeled
+        excluded = {k.lower() for k in result.keys()}
         for key, value in self.raw_meta.items():
-            lower_key = key.lower()
-            if lower_key not in ("id", "status", "created", "updated", "points", "assignee"):
+            if key.lower() not in excluded:
                 result[key] = value
         return result
 
@@ -226,9 +225,9 @@ class Epic:
         result["description"] = self.description
         result["related_issues"] = self.related_issues
         # Include any extra meta fields not explicitly modeled
+        excluded = {k.lower() for k in result.keys()}
         for key, value in self.raw_meta.items():
-            lower_key = key.lower()
-            if lower_key not in ("id", "status", "created", "updated", "owner"):
+            if key.lower() not in excluded:
                 result[key] = value
         return result
 
@@ -332,9 +331,6 @@ def get_all_issues(status_filter: Optional[str] = None) -> List[Issue]:
 
     issues = []
     for file_path in sorted(issues_dir.glob("i-*.md")):
-        # Skip _index.md (glob pattern already excludes it, but be safe)
-        if file_path.name == "_index.md":
-            continue
         issue = parse_issue_file(file_path)
         if issue is None:
             continue
@@ -362,8 +358,6 @@ def get_all_epics(status_filter: Optional[str] = None) -> List[Epic]:
 
     epics = []
     for file_path in sorted(epics_dir.glob("e-*.md")):
-        if file_path.name == "_index.md":
-            continue
         epic = parse_epic_file(file_path)
         if epic is None:
             continue
