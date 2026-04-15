@@ -232,6 +232,39 @@ class Epic:
         return result
 
 
+@dataclass
+class Agent:
+    """Represents a parsed agents.md file."""
+    id: str = ""
+    title: Optional[str] = None
+    description: Optional[str] = None
+    status: str = ""
+    created: str = ""
+    updated: str = ""
+    capabilities: List[str] = field(default_factory=list)
+    instructions: Optional[str] = None
+    raw_meta: Dict[str, str] = field(default_factory=dict)
+    raw_sections: Dict[str, str] = field(default_factory=dict)
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary for JSON serialization."""
+        result: Dict[str, Any] = {}
+        result["id"] = self.id
+        result["title"] = self.title
+        result["description"] = self.description
+        result["status"] = self.status
+        result["created"] = self.created
+        result["updated"] = self.updated
+        result["capabilities"] = self.capabilities
+        result["instructions"] = self.instructions
+        # Include any extra meta fields not explicitly modeled
+        excluded = {k.lower() for k in result.keys()}
+        for key, value in self.raw_meta.items():
+            if key.lower() not in excluded:
+                result[key] = value
+        return result
+
+
 def parse_issue_file(file_path: Path) -> Optional[Issue]:
     """
     Read an issue file and parse its meta table and content sections.
@@ -368,6 +401,69 @@ def get_all_epics(status_filter: Optional[str] = None) -> List[Epic]:
     return epics
 
 
+def parse_agents_file(file_path: Path) -> Optional[Agent]:
+    """
+    Read an agents.md file and parse its meta table and content sections.
+
+    Args:
+        file_path: Path to the agents.md file.
+
+    Returns:
+        Agent object if successfully parsed, None if malformed.
+    """
+    try:
+        content = file_path.read_text(encoding='utf-8')
+    except OSError as e:
+        print(f"Warning: could not read {file_path}: {e}", file=sys.stderr)
+        return None
+
+    meta = parse_meta_table(content)
+    if not meta:
+        print(f"Warning: malformed or missing meta table in {file_path}", file=sys.stderr)
+        return None
+
+    sections = parse_sections(content)
+
+    agent = Agent(
+        id=meta.get("ID", ""),
+        status=meta.get("Status", ""),
+        created=meta.get("Created", ""),
+        updated=meta.get("Updated", ""),
+        title=sections.get("Title"),
+        description=sections.get("Description"),
+        capabilities=parse_list_items(sections.get("Capabilities", "")),
+        instructions=sections.get("Instructions"),
+        raw_meta=meta,
+        raw_sections=sections,
+    )
+    return agent
+
+
+def get_all_agents(status_filter: Optional[str] = None) -> List[Agent]:
+    """
+    Read and parse the agents.md file from the repo root.
+
+    Args:
+        status_filter: If provided, only return agents matching this status
+                       (case-insensitive).
+
+    Returns:
+        List of Agent objects.
+    """
+    repo_root = get_repo_root()
+    agents_file = repo_root / "agents.md"
+    if not agents_file.is_file():
+        return []
+
+    agent = parse_agents_file(agents_file)
+    if agent is None:
+        return []
+    if status_filter and agent.status.lower() != status_filter.lower():
+        return []
+
+    return [agent]
+
+
 if __name__ == "__main__":
     import argparse
     import json
@@ -379,10 +475,12 @@ if __name__ == "__main__":
     try:
         issues = get_all_issues(status_filter=args.status)
         epics = get_all_epics(status_filter=args.status)
+        agents = get_all_agents(status_filter=args.status)
 
         output = {
             "issues": [i.to_dict() for i in issues],
             "epics": [e.to_dict() for e in epics],
+            "agents": [a.to_dict() for a in agents],
         }
         print(json.dumps(output, indent=2))
     except Exception as e:
