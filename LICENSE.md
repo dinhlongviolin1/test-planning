@@ -1,4 +1,3 @@
-Copyright 2026 test-planning contributors
 
                                  Apache License
                            Version 2.0, January 2004
@@ -183,20 +182,20 @@ Copyright 2026 test-planning contributors
       boilerplate notice, with the fields enclosed by brackets "[]"
       replaced with your own identifying information. (Don't include
       the brackets!)  The text should be enclosed in the appropriate
-      comment syntax for the file format. Please also get an in-depth
-      understanding of how to properly use the Apache License at
-      http://www.apache.org/foundation/license-faq.html.
+      comment syntax for the file format. Please do not alter or
+      remove the Apache header on individual source files; place the
+      notice in a single NOTICE file in your project's top directory.
 
-      Copyright [yyyy] [name of copyright owner]
+   Copyright (c) 2026 test-planning contributors
 
-      Licensed under the Apache License, Version 2.0 (the "License");
-      you may not use this file except in compliance with the License.
-      You may obtain a copy of the License at
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
 
-          http://www.apache.org/licenses/LICENSE-2.0
+       http://www.apache.org/licenses/LICENSE-2.0
 
-      Unless required by applicable law or agreed to in writing, software
-      distributed under the License is distributed on an "AS IS" BASIS,
-      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-      implied. See the License for the specific language governing
-      permissions and limitations under the License.
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
