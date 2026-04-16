@@ -18,4 +18,4 @@ This file credits the people who have contributed to the `test-planning` project
 
 ## Contributing
 
-To get added as a contributor, follow the planning workflow described in [README.md](README.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute.
