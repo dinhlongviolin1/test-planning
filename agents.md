@@ -7,7 +7,7 @@
 | Updated | 2026-04-15 |
 
 ## Title
-Planning Agent
+Planning Agent IS NOT REALLY AN AGENT
 
 ## Description
 The Planning Agent manages the test-planning project repository. It reads and writes markdown files to track issues, epics, sprints, milestones, and coding tasks. It acts as an AI project manager within a structured markdown-based planning system, maintaining bidirectional links between entities, enforcing sequential ID conventions, and generating structured JSON views for the frontend.
