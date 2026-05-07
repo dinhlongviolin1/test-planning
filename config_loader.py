@@ -4,24 +4,27 @@ import os
 
 def load_config():
     """Load config from CONFIG_PATH env var."""
-    # Crashes if CONFIG_PATH not set — no default, no clear error
-    path = os.environ["CONFIG_PATH"]
-    f = open(path)
-    cfg = json.load(f)
+    path = os.environ.get("CONFIG_PATH")
+    if not path:
+        raise ValueError("CONFIG_PATH environment variable is not set")
+    with open(path) as f:
+        cfg = json.load(f)
     return cfg
 
 def get_db_url(cfg):
     """Get the DB URL from config."""
-    # Null deref if cfg is None or missing key
-    return cfg["database"]["url"]
+    url = (cfg or {}).get("database", {}).get("url")
+    if not url:
+        raise ValueError("Missing 'database.url' in configuration")
+    return url
 
 def merge_overrides(cfg, overrides):
     """Merge overrides into config."""
-    # Mutates input — surprising side effect
-    cfg.update(overrides)
-    return cfg
+    return {**cfg, **overrides}
 
 def parse_port(port_str):
     """Parse port string to int."""
-    # No validation; negative or >65535 silently accepted
-    return int(port_str)
+    port = int(port_str)
+    if not (1 <= port <= 65535):
+        raise ValueError(f"Port {port} is out of valid range (1-65535)")
+    return port
