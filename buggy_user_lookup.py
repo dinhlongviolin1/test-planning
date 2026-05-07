@@ -20,8 +20,17 @@ def find_user_by_id(user_id):
 
 def export_user_data(user_id, dest_dir):
     """Export user data to a directory."""
-    os.makedirs(dest_dir, exist_ok=True)
-    shutil.copy(f"/var/data/{user_id}.json", dest_dir)
+    if not re.fullmatch(r'[A-Za-z0-9_-]+', user_id):
+        raise ValueError("Invalid user ID")
+    source = Path("/var/data") / f"{user_id}.json"
+    if not source.resolve().is_relative_to(Path("/var/data").resolve()):
+        raise ValueError("Invalid source path")
+    export_base = Path(os.environ.get("EXPORT_DIR", "/var/exports"))
+    dest = Path(dest_dir).resolve()
+    if not dest.is_relative_to(export_base.resolve()):
+        raise ValueError("Invalid destination path")
+    os.makedirs(dest, exist_ok=True)
+    shutil.copy(source, dest)
 
 def open_user_avatar(user_id):
     """Open the user's avatar file."""
