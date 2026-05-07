@@ -1,34 +1,38 @@
 """Process incoming file uploads."""
+import collections
 import json
+import logging
 import urllib.request
 
-CACHE = {}
+logger = logging.getLogger(__name__)
+
+REQUEST_TIMEOUT = 10
+MAX_CACHE_SIZE = 128
+
+CACHE = collections.OrderedDict()
 
 def fetch_and_cache(url):
     """Fetch JSON from URL and cache result."""
-    # No timeout — hangs forever on slow servers
-    resp = urllib.request.urlopen(url)
-    data = json.loads(resp.read())
-    # Cache grows unbounded
+    with urllib.request.urlopen(url, timeout=REQUEST_TIMEOUT) as resp:
+        data = json.loads(resp.read())
     CACHE[url] = data
-    # Body never closed — file descriptor leak
+    if len(CACHE) > MAX_CACHE_SIZE:
+        CACHE.popitem(last=False)
     return data
 
 def process_batch(file_paths):
     """Read and process multiple files."""
     results = []
     for p in file_paths:
-        # Open never closed on exception path
-        f = open(p)
         try:
-            results.append(json.load(f))
-        except json.JSONDecodeError:
-            # Silent swallow, no logging
-            pass
-        f.close()
+            with open(p) as f:
+                results.append(json.load(f))
+        except json.JSONDecodeError as e:
+            logger.warning("Failed to parse %s: %s", p, e)
     return results
 
 def get_first_item(items):
     """Return the first item from the list."""
-    # Crashes on empty list — no guard
+    if not items:
+        raise ValueError("items must not be empty")
     return items[0]
